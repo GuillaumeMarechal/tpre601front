@@ -18,6 +18,12 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white, // Couleur de fond de l'appbar
+          elevation: 0, // Pour enlever l'ombre de l'appbar
+          iconTheme: IconThemeData(color: Colors.black), // Couleur des icônes dans l'appbar
+          titleTextStyle: TextStyle(color: Colors.black), // Couleur du texte dans l'appbar
+        ),
       ),
       home: const MyHomePage(),
     );

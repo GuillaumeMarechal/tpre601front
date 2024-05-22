@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'plantDiv.dart';
 
 class PlantsPage extends StatelessWidget {
   @override
@@ -39,7 +40,17 @@ class PlantsPage extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(child: Text('Contenu de la page Plante ici')),
+      body: ListView(
+        children: [
+          PlantDiv(),
+          SizedBox(height: 8), // Espacement vertical entre les PlantDiv
+          PlantDiv(),
+          SizedBox(height: 8),
+          PlantDiv(),
+          SizedBox(height: 8),
+          // Ajoutez autant de PlantDiv que nécessaire ici
+        ],
+      ),
     );
   }
 
