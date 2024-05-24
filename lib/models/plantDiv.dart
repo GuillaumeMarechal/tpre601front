@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'plantView.dart';
 
 class PlantDiv extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Action à effectuer lorsque la PlantDiv est cliquée
+        //navigate vers plantPage
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PlantPage()),
+        );
         print('PlantDiv cliquée');
       },
       child: Container(
@@ -57,7 +62,6 @@ class PlantDiv extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // Action à effectuer lorsque l'icône de poubelle est cliquée
                             print('Icône de poubelle cliquée');
                           },
                           child: Icon(Icons.delete),
@@ -65,7 +69,6 @@ class PlantDiv extends StatelessWidget {
                         SizedBox(width: 8),
                         GestureDetector(
                           onTap: () {
-                            // Action à effectuer lorsque l'icône de crayon est cliquée
                             print('Icône de crayon cliquée');
                           },
                           child: Icon(Icons.edit),
@@ -73,7 +76,6 @@ class PlantDiv extends StatelessWidget {
                         SizedBox(width: 8),
                         GestureDetector(
                           onTap: () {
-                            // Action à effectuer lorsque l'icône de partage est cliquée
                             print('Icône de partage cliquée');
                           },
                           child: Icon(Icons.share),

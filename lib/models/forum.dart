@@ -76,11 +76,11 @@ class ForumPage extends StatelessWidget {
                 child: ListView(
                   children: [
                     ForumPost(), // Utilisez ForumPost() au lieu de MessagePage()
-                    SizedBox(height: 4), // Espacement vertical entre les ForumPost
+                    SizedBox(height: 8), // Espacement vertical entre les ForumPost
                     ForumPost(),
-                    SizedBox(height: 4),
+                    SizedBox(height: 8),
                     ForumPost(),
-                    SizedBox(height: 4),
+                    SizedBox(height: 8),
                     // Ajoutez autant de ForumPost que nécessaire ici
                   ],
                 ),
