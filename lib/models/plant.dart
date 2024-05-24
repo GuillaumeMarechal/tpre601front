@@ -43,12 +43,11 @@ class PlantsPage extends StatelessWidget {
       body: ListView(
         children: [
           PlantDiv(),
-          SizedBox(height: 8), // Espacement vertical entre les PlantDiv
-          PlantDiv(),
           SizedBox(height: 8),
           PlantDiv(),
           SizedBox(height: 8),
-          // Ajoutez autant de PlantDiv que nécessaire ici
+          PlantDiv(),
+          SizedBox(height: 8),
         ],
       ),
     );
@@ -65,36 +64,44 @@ class PlantsPage extends StatelessWidget {
 
         return AlertDialog(
           title: Text('Ajouter une plante'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                TextField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Nom',
+          content: Container(
+            width: 400, // Largeur du formulaire
+            height: 300, // Hauteur du formulaire
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 12), // Espacement entre le titre et les champs de texte
+                  TextField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Nom',
+                    ),
                   ),
-                ),
-                TextField(
-                  controller: locationController,
-                  decoration: InputDecoration(
-                    labelText: 'Lieu',
+                  SizedBox(height: 12), // Espacement entre les champs de texte
+                  TextField(
+                    controller: locationController,
+                    decoration: InputDecoration(
+                      labelText: 'Lieu',
+                    ),
                   ),
-                ),
-                TextField(
-                  controller: lastMaintenanceController,
-                  decoration: InputDecoration(
-                    labelText: 'Date de dernier entretien',
-                    hintText: 'YYYY-MM-DD',
+                  SizedBox(height: 12),
+                  TextField(
+                    controller: lastMaintenanceController,
+                    decoration: InputDecoration(
+                      labelText: 'Date de dernier entretien',
+                      hintText: 'YYYY-MM-DD',
+                    ),
                   ),
-                ),
-                TextField(
-                  controller: sowingDateController,
-                  decoration: InputDecoration(
-                    labelText: 'Date de semis',
-                    hintText: 'YYYY-MM-DD',
+                  SizedBox(height: 12),
+                  TextField(
+                    controller: sowingDateController,
+                    decoration: InputDecoration(
+                      labelText: 'Date de semis',
+                      hintText: 'YYYY-MM-DD',
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           actions: [
@@ -103,6 +110,12 @@ class PlantsPage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black, backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
             ),
             ElevatedButton(
               child: Text('Ajouter'),
@@ -122,6 +135,13 @@ class PlantsPage extends StatelessWidget {
                 // Fermer le dialogue
                 Navigator.of(context).pop();
               },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Color(0xFFA2C48B),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
             ),
           ],
         );
