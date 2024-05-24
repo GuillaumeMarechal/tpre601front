@@ -15,8 +15,8 @@ class MessageUser extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white, // Fond blanc
           borderRadius: BorderRadius.horizontal(
-            left: Radius.circular(50.0),
-            right: Radius.circular(50.0),
+            left: Radius.circular(5.0),
+            right: Radius.circular(5.0),
           ),
           border: Border.all(
             color: Colors.black, // Contour noir
