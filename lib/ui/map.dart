@@ -27,7 +27,7 @@ class _MapPageState extends State<MapPage> {
   static Future<MapInformations> getMapInformation() async {
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     final response = await http.post(
-        Uri.parse("http://localhost:8081/plantes/position"),
+        Uri.parse("http://localhost:8080/plantes/position"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

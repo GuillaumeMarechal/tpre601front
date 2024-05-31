@@ -1,3 +1,4 @@
+import 'package:arosaje/ui/messageUserView.dart';
 import 'package:flutter/material.dart';
 
 class MessageUser extends StatelessWidget {
@@ -5,7 +6,10 @@ class MessageUser extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Action à effectuer lors du clic sur l'élément
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MessageUserView()),
+        );
         print('MessageUser tapped!');
       },
       child: Container(

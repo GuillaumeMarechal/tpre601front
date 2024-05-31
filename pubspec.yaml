@@ -13,6 +13,8 @@ dependencies:
   flutter_map_location_marker: ^8.0.8
   flutter_map_supercluster: any
   http: ^1.2.0
+  image_picker: ^1.1.1
+  camera: ^0.11.0+1
 dev_dependencies:
   flutter_test:
     sdk: flutter

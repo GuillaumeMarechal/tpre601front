@@ -1,3 +1,4 @@
+import 'package:arosaje/ui/login.dart';
 import 'package:flutter/material.dart';
 import 'ui/home.dart';
 import 'ui/forum.dart';
@@ -71,6 +72,10 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           TextButton.icon(
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
             },
             icon: Icon(Icons.account_circle, color: Colors.black),
             label: Text(
