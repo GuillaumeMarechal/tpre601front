@@ -5,11 +5,11 @@ class CareSession extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        margin: EdgeInsets.only(left: 5, right: 5, bottom: 10), // Marge de 5px sur les côtés gauche, droit et bas
-        padding: EdgeInsets.all(10), // Rembourrage de 10px de chaque côté
+        margin: EdgeInsets.only(left: 5, right: 5, bottom: 10),
+        padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black, width: 0.5), // Contour de 0.5 en noir
-          borderRadius: BorderRadius.circular(5), // Bordure arrondie de 5px
+          border: Border.all(color: Colors.black, width: 0.5),
+          borderRadius: BorderRadius.circular(5),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,10 +19,10 @@ class CareSession extends StatelessWidget {
             Text('Date séance :', style: TextStyle(fontWeight: FontWeight.bold)),
             Row(
               children: [
-                Checkbox(value: true, onChanged: null), // Case cochée pour Problème entretien
+                Checkbox(value: true, onChanged: null),
                 Text('Problème entretien'),
                 SizedBox(width: 20),
-                Checkbox(value: false, onChanged: null), // Case non cochée pour Problème de santé
+                Checkbox(value: false, onChanged: null),
                 Text('Problème de santé'),
               ],
             ),
@@ -35,8 +35,8 @@ class CareSession extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Wrap(
-              spacing: 10, // Espacement entre les images
-              runSpacing: 10, // Espacement entre les lignes d'images
+              spacing: 10,
+              runSpacing: 10,
               children: [
                 _buildSquareImage(),
                 _buildSquareImage(),
@@ -53,7 +53,7 @@ class CareSession extends StatelessWidget {
     return Container(
       width: 100,
       height: 100,
-      color: Colors.blueGrey, // Couleur d'exemple pour l'image
+      color: Colors.blueGrey,
     );
   }
 }

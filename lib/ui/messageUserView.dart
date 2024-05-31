@@ -14,7 +14,7 @@ class MessageUserView extends StatelessWidget {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 16.0), // Espace à droite de l'image
+            padding: const EdgeInsets.only(right: 16.0),
             child: Image.asset(
               'lib/assets/arosaje.png',
               width: 40,
@@ -37,7 +37,7 @@ class MessageUserView extends StatelessWidget {
             ),
           ),
           Container(
-            color: Colors.grey[200], // Couleur de fond de la barre fixe
+            color: Colors.grey[200],
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
@@ -67,7 +67,8 @@ class MessageUserView extends StatelessWidget {
                       // Logique pour envoyer le message
                     },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Color(0xFFA2C48B), // Texte blanc
+                      foregroundColor: Colors.white,
+                      backgroundColor: Color(0xFFA2C48B),
                     ),
                     child: Text('Envoyer'),
                   ),

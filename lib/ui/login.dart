@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:arosaje/ui/register.dart'; // Assurez-vous d'importer votre RegisterPage
+import 'package:arosaje/ui/register.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -87,19 +87,17 @@ class LoginPage extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFA2C48B), // couleur de fond du bouton
+                      backgroundColor: Color(0xFFA2C48B),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(1.0), // border radius de 1 pixel
+                        borderRadius: BorderRadius.circular(1.0),
                       ),
                     ),
-                    onPressed: () {
-                      // Logique de connexion
-                    },
+                    onPressed: () {},
                     child: Text(
                       'Se connecter',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 18.0, // taille du texte augmentée
+                        fontSize: 18.0,
                       ),
                     ),
                   ),

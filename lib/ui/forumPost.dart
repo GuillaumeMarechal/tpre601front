@@ -5,16 +5,14 @@ class ForumPost extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Définir l'action à effectuer lors du clic sur l'élément
         print('Post cliqué!');
-        // Vous pouvez également naviguer vers une nouvelle page ou effectuer toute autre action ici.
       },
       child: Container(
         height: 150.0,
         width: double.infinity,
         decoration: BoxDecoration(
           color: Color(0xFFA2C48B).withOpacity(0.4),
-          borderRadius: BorderRadius.circular(8.0), // Radius des coins
+          borderRadius: BorderRadius.circular(8.0),
         ),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -28,18 +26,17 @@ class ForumPost extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8.0), // Espacement entre le titre et les tags
+              SizedBox(height: 8.0),
               Row(
                 children: [
                   _buildTag('Tag1'),
-                  SizedBox(width: 8.0), // Espacement entre les tags
+                  SizedBox(width: 8.0),
                   _buildTag('Tag2'),
-                  SizedBox(width: 8.0), // Espacement entre les tags
+                  SizedBox(width: 8.0),
                   _buildTag('Tag3'),
-                  // Ajoutez ici autant de tags que nécessaire
                 ],
               ),
-              SizedBox(height: 8.0), // Espacement entre les tags et le contenu
+              SizedBox(height: 8.0),
               Expanded(
                 child: SingleChildScrollView(
                   child: Text(
