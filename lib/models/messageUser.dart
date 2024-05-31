@@ -18,10 +18,6 @@ class MessageUser extends StatelessWidget {
             left: Radius.circular(5.0),
             right: Radius.circular(5.0),
           ),
-          border: Border.all(
-            color: Colors.black, // Contour noir
-            width: 0.5,
-          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.25), // Ombre portée noire avec opacité
@@ -37,7 +33,7 @@ class MessageUser extends StatelessWidget {
               child: Container(
                 width: 50.0,
                 height: 50.0,
-                color: Colors.blue, // Vous pouvez remplacer par l'image
+                color: Colors.grey, // Vous pouvez remplacer par l'image
                 child: Center(
                   child: Icon(Icons.person, color: Colors.white, size: 30.0), // Ajuster la taille de l'icône
                 ), // Ajouter un peu d'espace à droite de l'image

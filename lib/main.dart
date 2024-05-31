@@ -39,12 +39,21 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+  final PageStorageBucket _bucket = PageStorageBucket();
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+
+  final List<Widget> _pages = [
+    HomePage(),
+    MessagePage(),
+    PlantsPage(),
+    ForumPage(),
+    MapPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           TextButton.icon(
             onPressed: () {
-              // Action lorsque le bouton "Se connecter" est pressé
             },
             icon: Icon(Icons.account_circle, color: Colors.black),
             label: Text(
@@ -72,47 +80,38 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          HomePage(),
-          MessagePage(),
-          PlantsPage(),
-          ForumPage(),
-          MapPage(),
-        ],
+      body: PageStorage(
+        bucket: _bucket,
+        child: _pages[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.black),
+            icon: Icon(Icons.home, color: Colors.white),
             label: 'Accueil',
-            backgroundColor: Color(0xFFA2C48B),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message, color: Colors.black),
+            icon: Icon(Icons.message, color: Colors.white),
             label: 'Messages',
-            backgroundColor: Color(0xFFA2C48B),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_florist, color: Colors.black),
+            icon: Icon(Icons.local_florist, color: Colors.white),
             label: 'Mes plantes',
-            backgroundColor: Color(0xFFA2C48B),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.forum, color: Colors.black),
+            icon: Icon(Icons.forum, color: Colors.white),
             label: 'Forum',
-            backgroundColor: Color(0xFFA2C48B),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.map, color: Colors.black),
+            icon: Icon(Icons.map, color: Colors.white),
             label: 'Carte',
-            backgroundColor: Color(0xFFA2C48B),
           ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        selectedItemColor: Colors.black,
+        selectedItemColor: Colors.white,
+        backgroundColor: Color(0xFFA2C48B),
       ),
     );
   }
