@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'models/home.dart';
-import 'models/forum.dart';
-import 'models/map.dart';
-import 'models/message.dart';
-import 'models/plant.dart';
+import 'ui/home.dart';
+import 'ui/forum.dart';
+import 'ui/map.dart';
+import 'ui/message.dart';
+import 'ui/plant.dart';
 
 void main() {
   runApp(const MyApp());

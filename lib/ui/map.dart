@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:arosaje/models/MapInformationPosition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -10,6 +11,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:geolocator/geolocator.dart';
 
+import '../models/MapInformations.dart';
+
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
 
@@ -19,9 +22,9 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
 
-  Future<List<Marker>> markers = getMarkers();
+  Future<MapInformations> mapInformation = getMapInformation();
 
-  static Future<List<Marker>> getMarkers() async {
+  static Future<MapInformations> getMapInformation() async {
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     final response = await http.post(
         Uri.parse("http://localhost:8081/plantes/position"),
@@ -40,16 +43,19 @@ class _MapPageState extends State<MapPage> {
           point: LatLng(e["latitude"], e["longitude"]),
           child: const Icon(Icons.pin_drop)
       )).toList();
-      return markers;
+      print("OK");
+      return MapInformations(MapInformationPosition.fromPosition(position), markers);
     }
     else{
-      throw Exception('Failed to markers');
+      print("PAS OK");
+      throw Exception('Failed to get markers');
     }
   }
   
-  static Widget getMap(List<Marker> markers){
+  static Widget getMap(MapInformations mapInformations){
     return FlutterMap(
-        options: const MapOptions(
+        options: MapOptions(
+          initialCenter: LatLng(mapInformations.position.latitude, mapInformations.position.longitude),
           initialZoom: 18,
         ),
         children: [
@@ -58,7 +64,7 @@ class _MapPageState extends State<MapPage> {
             userAgentPackageName: 'com.epsi',
           ),
           SuperclusterLayer.immutable(
-            initialMarkers: markers,
+            initialMarkers: mapInformations.markers,
             clusterWidgetSize: const Size(40, 40),
             indexBuilder: IndexBuilders.computeWithOriginalMarkers,
             builder: (context, _, markerCount, extraClusterData) {
@@ -92,7 +98,7 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: markers,
+        future: mapInformation,
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
@@ -104,13 +110,13 @@ class _MapPageState extends State<MapPage> {
               );
             } else if (snapshot.hasData) {
               // Extracting data from snapshot object
-              final data = snapshot.data as List<Marker>;
+              final data = snapshot.data as MapInformations;
               return Center(
                 child: getMap(data),
               );
             }
           }
-          return getMap([]);
+          return getMap(MapInformations(MapInformationPosition(0,0), []));
         });
   }
 }
