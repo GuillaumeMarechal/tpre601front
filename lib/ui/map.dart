@@ -43,11 +43,9 @@ class _MapPageState extends State<MapPage> {
           point: LatLng(e["latitude"], e["longitude"]),
           child: const Icon(Icons.pin_drop)
       )).toList();
-      print("OK");
       return MapInformations(MapInformationPosition.fromPosition(position), markers);
     }
     else{
-      print("PAS OK");
       throw Exception('Failed to get markers');
     }
   }

@@ -1,53 +1,86 @@
+import 'package:arosaje/ui/services/PlanteService.dart';
 import 'package:flutter/material.dart';
+import '../models/PlanteResume.dart';
 import 'plantDiv.dart';
 
-class PlantsPage extends StatelessWidget {
+class PlantsPage extends StatefulWidget {
+  const PlantsPage({super.key});
+
+  @override
+  State<PlantsPage> createState() => _PlantsPageState();
+}
+
+class _PlantsPageState extends State<PlantsPage> {
+  late Future<List<PlanteResume>> plantesResume;
+  PlanteService planteService = PlanteService();
+
+  @override
+  void initState(){
+    plantesResume = planteService.fetchPlantesResume();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Rechercher des plantes',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-              ),
-            ),
-            SizedBox(width: 8.0),
-            ElevatedButton(
-              onPressed: () {
-                _showAddPlantDialog(context);
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Color(0xFFA2C48B),
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: Text('+ Ajouter'),
-            ),
-          ],
-        ),
-      ),
-      body: ListView(
+    return Container(
+      child: Column(
         children: [
-          PlantDiv(),
-          SizedBox(height: 8),
-          PlantDiv(),
-          SizedBox(height: 8),
-          PlantDiv(),
-          SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Rechercher des plantes',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              ElevatedButton(
+                onPressed: () {
+                  _showAddPlantDialog(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xFFA2C48B),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: Text('+ Ajouter'),
+              ),
+            ],
+          ),
+          Expanded(
+              child: FutureBuilder(
+                future: plantesResume,
+                builder: (context, snapshot) {
+                  if(snapshot.hasData){
+                    List<PlanteResume> data = snapshot.data!;
+                    return ListView.builder(
+                        itemCount: data.length,
+                        itemBuilder: (context, index){
+                          return PlantDiv(data[index]);
+                        }
+                    );
+                  }
+                  else if(snapshot.hasError){
+                    return Center(
+                        child: Text(
+                            'Impossible de récup"rer les données : ${snapshot.error}'
+                        )
+                    );
+                  }
+                  return Center(child: CircularProgressIndicator(),);
+                },
+              )
+          )
         ],
       ),
     );

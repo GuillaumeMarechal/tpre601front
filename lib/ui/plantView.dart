@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'careSession.dart';
 
 class PlantPage extends StatelessWidget {
+  int idPlante;
+
+  PlantPage(this.idPlante);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Plant Name'),
+        title: Text('Plant Name ${idPlante}'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
