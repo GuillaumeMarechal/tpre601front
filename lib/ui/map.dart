@@ -1,17 +1,13 @@
-import 'dart:convert';
-
 import 'package:arosaje/models/MapInformationPosition.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:arosaje/ui/services/PlanteService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_map_supercluster/flutter_map_supercluster.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:geolocator/geolocator.dart';
 
-import '../models/MapInformations.dart';
+import '../models/map_informations.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -22,32 +18,13 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
 
-  Future<MapInformations> mapInformation = getMapInformation();
+  late Future<MapInformations> mapInformation;
+  PlanteService planteService = PlanteService();
 
-  static Future<MapInformations> getMapInformation() async {
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    final response = await http.post(
-        Uri.parse("http://localhost:8080/plantes/position"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{
-          "latitude" : position.latitude,
-          "longitude" : position.longitude,
-          "portee" : 4,
-        })
-    );
-    if(response.statusCode == 200){
-      List<dynamic> json = jsonDecode(response.body) as List<dynamic>;
-      List<Marker> markers = json.map((e) => Marker(
-          point: LatLng(e["latitude"], e["longitude"]),
-          child: const Icon(Icons.pin_drop)
-      )).toList();
-      return MapInformations(MapInformationPosition.fromPosition(position), markers);
-    }
-    else{
-      throw Exception('Failed to get markers');
-    }
+  @override
+  void initState(){
+    super.initState();
+    mapInformation = planteService.fetchMapInformation();
   }
   
   static Widget getMap(MapInformations mapInformations){

@@ -1,17 +1,17 @@
-import 'package:arosaje/models/PlanteResume.dart';
+import 'package:arosaje/models/plante_resume.dart';
 import 'package:flutter/material.dart';
-import 'plantView.dart';
+import 'plant_view.dart';
 
-class PlantDiv extends StatefulWidget {
+class MyPlantsDiv extends StatefulWidget {
   PlanteResume planteResume;
 
-  PlantDiv(this.planteResume);
+  MyPlantsDiv(this.planteResume, {super.key});
 
   @override
-  _PlantDivState createState() => _PlantDivState();
+  _MyPlantsDivState createState() => _MyPlantsDivState();
 }
 
-class _PlantDivState extends State<PlantDiv> {
+class _MyPlantsDivState extends State<MyPlantsDiv> {
   bool isHovered = false;
   bool deleteHovered = false;
   bool editHovered = false;
