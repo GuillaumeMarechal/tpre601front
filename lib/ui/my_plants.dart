@@ -1,15 +1,37 @@
+import 'package:arosaje/ui/services/PlanteService.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'plantDiv.dart';
+import '../models/globals.dart';
+import '../models/plante_resume.dart';
+import 'plant_div.dart';
 
-class PlantsPage extends StatelessWidget {
+class MyPlantsPage extends StatefulWidget {
+  const MyPlantsPage({super.key});
+
+  @override
+  State<MyPlantsPage> createState() => _MyPlantsPageState();
+}
+
+class _MyPlantsPageState extends State<MyPlantsPage> {
+  TextEditingController searchController = TextEditingController();
+  late Future<List<PlanteResume>> plantesResume;
+  PlanteService planteService = PlanteService();
+
+  @override
+  void initState(){
+    super.initState();
+    plantesResume = planteService.fetchPlantesResume(Globals.userId);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
+    return Column(
+      children: [
+        Row(
           children: [
             Expanded(
-              child: TextField(
+              child: TextFormField(
+                controller: searchController,
                 decoration: InputDecoration(
                   hintText: 'Rechercher des plantes',
                   prefixIcon: Icon(Icons.search),
@@ -22,34 +44,67 @@ class PlantsPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 8.0),
+            const SizedBox(width: 8.0),
             ElevatedButton(
               onPressed: () {
-                _showAddPlantDialog(context);
+                setState(() {
+                  plantesResume = planteService.fetchPlantesResumeWithSearch(Globals.userId, searchController.text);
+                });
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
-                backgroundColor: Color(0xFFA2C48B),
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                backgroundColor: const Color(0xFFA2C48B),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
-              child: Text('+ Ajouter'),
+              child: const Text('Rechercher'),
             ),
           ],
         ),
-      ),
-      body: ListView(
-        children: [
-          PlantDiv(),
-          SizedBox(height: 8),
-          PlantDiv(),
-          SizedBox(height: 8),
-          PlantDiv(),
-          SizedBox(height: 8),
-        ],
-      ),
+        Expanded(
+            child: FutureBuilder(
+              future: plantesResume,
+              builder: (context, snapshot) {
+                if(snapshot.hasData){
+                  List<PlanteResume> data = snapshot.data!;
+                  return ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (context, index){
+                        return MyPlantsDiv(data[index]);
+                      }
+                  );
+                }
+                else if(snapshot.hasError){
+                  return Center(
+                      child: Text(
+                          'Impossible de récup"rer les données : ${snapshot.error}'
+                      )
+                  );
+                }
+                return const Center(child: CircularProgressIndicator(),);
+              },
+            )
+        ),
+        ElevatedButton(
+          onPressed: () {
+            _showAddPlantDialog(context);
+          },
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: const Color(0xFFA2C48B),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+          ),
+          child: const Text(
+              '+ Ajouter',
+            style: TextStyle(fontSize: 26),
+          ),
+        ),
+      ],
     );
   }
 

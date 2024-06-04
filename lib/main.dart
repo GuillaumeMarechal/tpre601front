@@ -4,7 +4,7 @@ import 'ui/home.dart';
 import 'ui/forum.dart';
 import 'ui/map.dart';
 import 'ui/message.dart';
-import 'ui/plant.dart';
+import 'ui/my_plants.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     HomePage(),
     MessagePage(),
-    PlantsPage(),
+    MyPlantsPage(),
     ForumPage(),
     MapPage(),
   ];

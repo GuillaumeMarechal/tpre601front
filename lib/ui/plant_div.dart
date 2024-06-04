@@ -1,12 +1,17 @@
+import 'package:arosaje/models/plante_resume.dart';
 import 'package:flutter/material.dart';
-import 'plantView.dart';
+import 'plant_view.dart';
 
-class PlantDiv extends StatefulWidget {
+class MyPlantsDiv extends StatefulWidget {
+  PlanteResume planteResume;
+
+  MyPlantsDiv(this.planteResume, {super.key});
+
   @override
-  _PlantDivState createState() => _PlantDivState();
+  _MyPlantsDivState createState() => _MyPlantsDivState();
 }
 
-class _PlantDivState extends State<PlantDiv> {
+class _MyPlantsDivState extends State<MyPlantsDiv> {
   bool isHovered = false;
   bool deleteHovered = false;
   bool editHovered = false;
@@ -30,9 +35,8 @@ class _PlantDivState extends State<PlantDiv> {
           //navigate vers plantPage
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PlantPage()),
+            MaterialPageRoute(builder: (context) => PlantPage(widget.planteResume.idPlantePerso)),
           );
-          print('PlantDiv cliquée');
         },
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -62,17 +66,16 @@ class _PlantDivState extends State<PlantDiv> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Tournesol',
+                          widget.planteResume.nomPlante,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(height: 5),
-                        _buildTextWithIcon(Icons.person, 'Propriétaire : '),
-                        _buildTextWithIcon(Icons.location_on, 'Lieu : '),
-                        _buildTextWithIcon(Icons.calendar_today, 'Dernier entretien : '),
-                        _buildTextWithIcon(Icons.event, 'Date du semis : '),
+                        _buildTextWithIcon(Icons.person, 'Propriétaire : ${widget.planteResume.username}'),
+                        _buildTextWithIcon(Icons.location_on, 'Lieu : ${widget.planteResume.adresseApproximative}'),
+                        _buildTextWithIcon(Icons.event, 'Date du semis : ${widget.planteResume.dateCreation.toString()}'),
                       ],
                     ),
                   ),

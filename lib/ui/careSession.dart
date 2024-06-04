@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 
-class CareSession extends StatelessWidget {
+import '../models/plante_informations_entretien.dart';
+
+class CareSession extends StatefulWidget {
+  PlanteInformationsEntretien planteInformationsEntretien;
+
+  CareSession(this.planteInformationsEntretien, {super.key});
+
+  @override
+  State<CareSession> createState() => _CareSessionState();
+}
+
+class _CareSessionState extends State<CareSession> {
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        margin: EdgeInsets.only(left: 5, right: 5, bottom: 10),
-        padding: EdgeInsets.all(10),
+        margin: const EdgeInsets.only(left: 5, right: 5, bottom: 10), // Marge de 5px sur les côtés gauche, droit et bas
+        padding: const EdgeInsets.all(10), // Rembourrage de 10px de chaque côté
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black, width: 0.5),
           borderRadius: BorderRadius.circular(5),
@@ -14,29 +25,29 @@ class CareSession extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Nom du gardien :', style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 5),
-            Text('Date séance :', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Nom du gardien : ${widget.planteInformationsEntretien.nomGardien}', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 5),
+            Text('Date séance : ${widget.planteInformationsEntretien.dateEntretien}', style: TextStyle(fontWeight: FontWeight.bold)),
             Row(
               children: [
-                Checkbox(value: true, onChanged: null),
-                Text('Problème entretien'),
-                SizedBox(width: 20),
-                Checkbox(value: false, onChanged: null),
-                Text('Problème de santé'),
+                Checkbox(value: widget.planteInformationsEntretien.problemeEntretien, onChanged: null), // Case cochée pour Problème entretien
+                const Text('Problème entretien'),
+                const SizedBox(width: 20),
+                Checkbox(value: widget.planteInformationsEntretien.problemeSante, onChanged: null), // Case non cochée pour Problème de santé
+                const Text('Problème de santé'),
               ],
             ),
-            SizedBox(height: 5),
-            Text('Commentaire :', style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
+            const Text('Commentaire :', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 5),
             Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-              style: TextStyle(),
+              widget.planteInformationsEntretien.commentaire,
+              style: const TextStyle(),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Wrap(
-              spacing: 10,
-              runSpacing: 10,
+              spacing: 10, // Espacement entre les images
+              runSpacing: 10, // Espacement entre les lignes d'images
               children: [
                 _buildSquareImage(),
                 _buildSquareImage(),
