@@ -49,22 +49,13 @@ class _CareSessionState extends State<CareSession> {
               spacing: 10, // Espacement entre les images
               runSpacing: 10, // Espacement entre les lignes d'images
               children: [
-                _buildSquareImage(),
-                _buildSquareImage(),
-                _buildSquareImage(),
+                for(Image image in widget.planteInformationsEntretien.images)
+                  image,
               ],
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildSquareImage() {
-    return Container(
-      width: 100,
-      height: 100,
-      color: Colors.blueGrey,
     );
   }
 }

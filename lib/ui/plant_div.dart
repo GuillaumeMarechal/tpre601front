@@ -59,6 +59,7 @@ class _MyPlantsDivState extends State<MyPlantsDiv> {
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(10),
                     ),
+                    child: widget.planteResume.image,
                   ),
                   SizedBox(width: 10),
                   Expanded(

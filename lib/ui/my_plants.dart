@@ -1,7 +1,7 @@
 import 'package:arosaje/ui/services/PlanteService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../models/globals.dart';
+import '../util/globals.dart';
 import '../models/plante_resume.dart';
 import 'plant_div.dart';
 
