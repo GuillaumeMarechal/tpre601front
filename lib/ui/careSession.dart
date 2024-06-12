@@ -50,7 +50,10 @@ class _CareSessionState extends State<CareSession> {
               runSpacing: 10, // Espacement entre les lignes d'images
               children: [
                 for(Image image in widget.planteInformationsEntretien.images)
-                  image,
+                  Container(
+                    height: 100,
+                    child: image,
+                  ),
               ],
             ),
           ],

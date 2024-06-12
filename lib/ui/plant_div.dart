@@ -4,8 +4,9 @@ import 'plant_view.dart';
 
 class MyPlantsDiv extends StatefulWidget {
   PlanteResume planteResume;
+  Function() refresh;
 
-  MyPlantsDiv(this.planteResume, {super.key});
+  MyPlantsDiv(this.planteResume, this.refresh, {super.key});
 
   @override
   _MyPlantsDivState createState() => _MyPlantsDivState();
@@ -31,12 +32,12 @@ class _MyPlantsDivState extends State<MyPlantsDiv> {
         });
       },
       child: GestureDetector(
-        onTap: () {
-          //navigate vers plantPage
-          Navigator.push(
+        onTap: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => PlantPage(widget.planteResume.idPlantePerso)),
           );
+          widget.refresh();
         },
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 10),
@@ -80,71 +81,6 @@ class _MyPlantsDivState extends State<MyPlantsDiv> {
                       ],
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Row(
-                        children: [
-                          MouseRegion(
-                            onEnter: (_) {
-                              setState(() {
-                                deleteHovered = true;
-                              });
-                            },
-                            onExit: (_) {
-                              setState(() {
-                                deleteHovered = false;
-                              });
-                            },
-                            child: GestureDetector(
-                              onTap: () {
-                                print('Icône de poubelle cliquée');
-                              },
-                              child: Icon(Icons.delete, color: deleteHovered ? Colors.grey : null),
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          MouseRegion(
-                            onEnter: (_) {
-                              setState(() {
-                                editHovered = true;
-                              });
-                            },
-                            onExit: (_) {
-                              setState(() {
-                                editHovered = false;
-                              });
-                            },
-                            child: GestureDetector(
-                              onTap: () {
-                                print('Icône de crayon cliquée');
-                              },
-                              child: Icon(Icons.edit, color: editHovered ? Colors.grey : null),
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          MouseRegion(
-                            onEnter: (_) {
-                              setState(() {
-                                shareHovered = true;
-                              });
-                            },
-                            onExit: (_) {
-                              setState(() {
-                                shareHovered = false;
-                              });
-                            },
-                            child: GestureDetector(
-                              onTap: () {
-                                print('Icône de partage cliquée');
-                              },
-                              child: Icon(Icons.share, color: shareHovered ? Colors.grey : null),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ],
@@ -161,10 +97,16 @@ class _MyPlantsDivState extends State<MyPlantsDiv> {
         children: [
           Icon(icon, size: 16),
           SizedBox(width: 5),
-          Text(
-            text,
-            style: TextStyle(fontSize: 14),
-          ),
+          Flexible(
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontSize: 14,
+                overflow: TextOverflow.clip
+              ),
+            ),
+          )
+
         ],
       ),
     );

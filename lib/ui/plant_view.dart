@@ -1,4 +1,6 @@
+import 'package:arosaje/models/patch_plante_personnelle_conseils.dart';
 import 'package:arosaje/ui/services/PlanteService.dart';
+import 'package:arosaje/util/globals.dart';
 import 'package:flutter/material.dart';
 import '../models/plante_information.dart';
 import 'careSession.dart';
@@ -69,11 +71,103 @@ class _PlantPageState extends State<PlantPage> {
                           children: [
                             _buildRow(Icons.person, 'Propriétaire : ${planteInformations.username}'),
                             const Divider(color: Colors.grey),
+                            _buildRow(Icons.note, 'Quantite : ${planteInformations.quantite}'),
+                            const Divider(color: Colors.grey),
                             _buildRow(Icons.event, 'Date du semis : ${planteInformations.dateCreation}'),
                             const Divider(color: Colors.grey),
                             _buildRow(Icons.place, 'Lieu de plantation : ${planteInformations.adresseApproximative}'),
                             const Divider(color: Colors.grey),
                             _buildRow(Icons.history, 'Dernier entretien : ${planteInformations.getDateDernierEntretien().toString()}'),
+                            const Divider(color: Colors.grey),
+                            _buildRow(Icons.note, 'Conseils : \n${planteInformations.conseils}'),
+                            if(planteInformations.idUser == Globals.userId)
+                              ElevatedButton(
+                              onPressed: () {
+                                TextEditingController controller = TextEditingController();
+                                controller.text = planteInformations.conseils;
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text("Modification des conseils"),
+                                      content: TextFormField(
+                                        controller: controller,
+                                        maxLines: null,
+                                        keyboardType: TextInputType.multiline,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Conseils',
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Annuler")),
+                                        TextButton(
+                                          onPressed: () async {
+                                            print(planteInformations.idPlantePerso);
+                                            bool result = await planteService.patchPlantePersonnelleConseils(PatchPlantePersonnelleConseils(planteInformations.idPlantePerso, controller.text));
+                                            if(result){
+                                              Navigator.pop(context);
+                                              setState(() {
+                                                futPlanteInformations = planteService.fetchPlanteInformatios(widget.idPlante);
+                                              });
+                                            }
+                                          },
+                                          child: const Text("Valider")
+                                        )
+                                      ],
+                                    );
+                                  }
+                                );
+                              },
+                              child: const Text("Modifier les conseils.")
+                            ),
+                            const Divider(color: Colors.grey),
+                            Wrap(
+                              spacing: 10,
+                              runSpacing: 10,
+                              children: [
+                                for(Image image in planteInformations.images)
+                                  Container(
+                                    height: 100,
+                                    child: image,
+                                  ),
+                              ],
+                            ),
+                            const Divider(color: Colors.grey),
+                            if(planteInformations.idUser == Globals.userId)
+                              ElevatedButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: const Text("Suppression de la plante"),
+                                        content: const Text("Etes-vous sur de vouloir retirer la plante ?\nCette action est definitive."),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text("Annuler")
+                                          ),
+                                          TextButton(
+                                            onPressed: () async {
+                                              await planteService.deletePlantePersonnelle(planteInformations.idPlantePerso);
+                                              Navigator.pop(context);
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text("Valider")
+                                          )
+                                        ],
+                                      );
+                                    }
+                                  );
+                                },
+                                child: const Text("Retirer la plante.")
+                            ),
                           ],
                         ),
                       ),
@@ -132,7 +226,15 @@ class _PlantPageState extends State<PlantPage> {
         children: [
           Icon(icon, color: Colors.black),
           SizedBox(width: 10),
-          Text(text, style: TextStyle(color: Colors.black)),
+          Flexible(
+            child: Text(
+                text,
+                style: TextStyle(
+                    color: Colors.black,
+                    overflow: TextOverflow.clip
+                )
+            ),
+          )
         ],
       ),
     );
