@@ -1,5 +1,7 @@
 import 'package:arosaje/models/MapInformationPosition.dart';
+import 'package:arosaje/ui/plant_view.dart';
 import 'package:arosaje/ui/services/PlanteService.dart';
+import 'package:arosaje/ui/value_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
@@ -17,7 +19,6 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-
   late Future<MapInformations> mapInformation;
   PlanteService planteService = PlanteService();
   late Future<String> locationPermissionResult;
@@ -79,6 +80,15 @@ class _MapPageState extends State<MapPage> {
             initialMarkers: mapInformations.markers,
             clusterWidgetSize: const Size(40, 40),
             indexBuilder: IndexBuilders.computeWithOriginalMarkers,
+            onMarkerTap: (marker){
+              if(marker.child is ValueWidget){
+                ValueWidget child = marker.child as ValueWidget;
+                Navigator.push(
+                    context,
+                  MaterialPageRoute(builder: (context) => PlantPage(child.value)),
+                );
+              }
+            },
             builder: (context, _, markerCount, extraClusterData) {
               return Container(
                 decoration: BoxDecoration(

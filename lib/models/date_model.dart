@@ -54,6 +54,11 @@ class DateModel{
     return false;
   }
 
+  int toInt(){
+    DateTime date = DateTime(year, month, day, hour, minute, second);
+    return date.difference(DateTime(1970)).inSeconds;
+  }
+
   String toString(){
     return '${this.day}/${this.month}/${this.year}';
   }

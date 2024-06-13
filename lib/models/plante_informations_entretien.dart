@@ -4,18 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:arosaje/models/date_model.dart';
 
 class PlanteInformationsEntretien{
+  int idVisite;
   String nomGardien;
+  int idGardien;
   DateModel dateEntretien;
   bool problemeEntretien;
   bool problemeSante;
+  bool visiteEffectue;
   String commentaire;
   List<Image> images;
 
   PlanteInformationsEntretien.fromJson(Map<String, dynamic> json):
+      this.idVisite = json["idVisite"]??0,
       this.nomGardien = json["nomGardien"]??"",
+      this.idGardien = json["idGardien"]??0,
       this.dateEntretien = DateModel.fromTimestamp(json["dateEntretien"]??""),
       this.problemeEntretien = json["problemeEntretien"]??false,
       this.problemeSante = json["problemeSante"]??false,
+      this.visiteEffectue = json["visiteEffectue"]??false,
       this.commentaire = json["commentaire"]??"",
       this.images = getListImages(json["images"]??[]);
 

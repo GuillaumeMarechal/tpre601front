@@ -7,6 +7,8 @@ import 'package:arosaje/models/patch_plante_personnelle_conseils.dart';
 import 'package:arosaje/models/plante_information.dart';
 import 'package:arosaje/models/plante_nom_commun.dart';
 import 'package:arosaje/models/plante_resume.dart';
+import 'package:arosaje/models/valider_entretien.dart';
+import 'package:arosaje/ui/value_widget.dart';
 import 'package:arosaje/util/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -153,10 +155,25 @@ class PlanteService{
     );
     if(response.statusCode == 200){
       List<dynamic> json = jsonDecode(response.body) as List<dynamic>;
-      List<Marker> markers = json.map((e) => Marker(
-          point: LatLng(e["latitude"], e["longitude"]),
-          child: const Icon(Icons.pin_drop)
-      )).toList();
+      List<Marker> markers = json.map((e) {
+        Color color = Colors.black;
+        if(e['visiteLibre']){
+          color = Colors.red;
+        }
+        if(e['idUser'] == Globals.userId){
+          color = Colors.blue;
+        }
+        return Marker(
+            point: LatLng(e["latitude"], e["longitude"]),
+            child: ValueWidget(
+              value: e['idPlantePerso'],
+              child: Icon(
+                Icons.pin_drop,
+                color: color,
+              ),
+            )
+        );
+      }).toList();
       return MapInformations(MapInformationPosition.fromPosition(position), markers);
     }
     else{
@@ -230,5 +247,37 @@ class PlanteService{
       return true;
     }
     return false;
+  }
+
+  Future<void> sePositionner(int id, int gardienId) async{
+    await http.post(Uri.parse('${uri}visites/positionner'),
+        headers: {"content-type" : "application/json"},
+        body: json.encode({
+          "idVisite": id,
+          "gardienIdUser": gardienId
+        }));
+  }
+
+  Future<void> validerEntretien(ValiderEntretien dto) async{
+    await http.post(Uri.parse('${uri}visites/valider'),
+        headers: {"content-type" : "application/json"},
+        body: json.encode(dto.toJson()));
+  }
+
+  Future<bool> ajouterEntretien(String date, int idPlante) async{
+    final response = await http.post(Uri.parse('${uri}visites/ajouter'),
+        headers: {"content-type" : "application/json"},
+        body: json.encode({
+          "dateVisite" : date,
+          "plantePersonnelleIdPlantePerso" : idPlante
+        }));
+    if(response.statusCode == 200){
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> seRetirer(int id) async{
+    await http.delete(Uri.parse('${uri}visites/positionner/${id}'));
   }
 }

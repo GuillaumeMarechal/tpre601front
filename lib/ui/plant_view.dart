@@ -1,4 +1,5 @@
 import 'package:arosaje/models/patch_plante_personnelle_conseils.dart';
+import 'package:arosaje/models/plante_informations_entretien.dart';
 import 'package:arosaje/ui/services/PlanteService.dart';
 import 'package:arosaje/util/globals.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,12 @@ class _PlantPageState extends State<PlantPage> {
   void initState(){
     super.initState();
     futPlanteInformations = planteService.fetchPlanteInformatios(widget.idPlante);
+  }
+
+  void refresh(){
+    setState(() {
+      futPlanteInformations = planteService.fetchPlanteInformatios(widget.idPlante);
+    });
   }
 
   @override
@@ -51,6 +58,10 @@ class _PlantPageState extends State<PlantPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               PlanteInformations planteInformations = snapshot.data!;
+              List<PlanteInformationsEntretien> entretiens = planteInformations.entretiens;
+              entretiens.sort((elt1, elt2) {
+                return elt2.dateEntretien.toInt() - elt1.dateEntretien.toInt();
+              });
               return SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 physics: ScrollPhysics(),
@@ -171,6 +182,100 @@ class _PlantPageState extends State<PlantPage> {
                           ],
                         ),
                       ),
+                      if(planteInformations.idUser == Globals.userId)
+                        const SizedBox(height: 10), // Séparation de 10 pixels
+                      if(planteInformations.idUser == Globals.userId)
+                        Container(
+                        margin: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: Center(
+                          child: ElevatedButton(
+                              onPressed: () async{
+                                await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      TextEditingController controller = TextEditingController();
+                                      bool error = false;
+                                      String errorMessage = "";
+                                      return StatefulBuilder(
+                                        builder: (context, setState){
+                                          return AlertDialog(
+                                            title: Text("Ajouter un entretien"),
+                                            content:  SingleChildScrollView(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  if(error)
+                                                    Text(errorMessage),
+                                                  TextFormField(
+                                                    controller: controller,
+                                                    readOnly: true,
+                                                    onTap: () async {
+                                                      FocusScope.of(context).requestFocus(FocusNode());
+                                                      DateTime? picked = await showDatePicker(
+                                                        context: context,
+                                                        initialDate: DateTime.now(),
+                                                        firstDate: DateTime(2000),
+                                                        lastDate: DateTime(3000),
+                                                      );
+                                                      if(picked != null){
+                                                        controller.text = "${picked.year}-${picked.month >= 10 ? picked.month : "0${picked.month}"}-${picked.day >= 10 ? picked.day : "0${picked.day}"}";
+                                                      }
+                                                    },
+                                                    decoration: const InputDecoration(
+                                                      labelText: 'Date de l\'entretien',
+                                                      hintText: 'YYYY-MM-DD',
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: (){
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text("Annuler")
+                                              ),
+                                              TextButton(
+                                                  onPressed: () async{
+                                                    if(controller.text != ""){
+                                                      bool ok = await planteService.ajouterEntretien(controller.text, widget.idPlante);
+                                                      if(ok){
+                                                        Navigator.pop(context);
+                                                      }
+                                                      else{
+                                                        setState((){
+                                                          error = true;
+                                                          errorMessage = "Une erreur s'est produite";
+                                                        });
+                                                      }
+                                                    }
+                                                    else{
+                                                      setState((){
+                                                        error = true;
+                                                        errorMessage = "La date est incorrecte";
+                                                      });
+                                                    }
+                                                  },
+                                                  child: Text("Valider")
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                );
+                                refresh();
+                              },
+                              child: const Text("Programmer un entretien")
+                          ),
+                        )
+                      ),
                       const SizedBox(height: 10), // Séparation de 10 pixels
                       Container(
                         margin: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
@@ -193,9 +298,9 @@ class _PlantPageState extends State<PlantPage> {
                             ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: planteInformations.entretiens.length,
+                                itemCount: entretiens.length,
                                 itemBuilder: (context, index) {
-                                  return CareSession(planteInformations.entretiens[index]);
+                                  return CareSession(entretiens[index], refresh);
                                 }
                             ),
                           ],
