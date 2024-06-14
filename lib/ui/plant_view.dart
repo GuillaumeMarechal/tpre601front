@@ -4,6 +4,7 @@ import 'package:arosaje/ui/services/PlanteService.dart';
 import 'package:arosaje/util/globals.dart';
 import 'package:flutter/material.dart';
 import '../models/plante_information.dart';
+import '../util/button.dart';
 import 'careSession.dart';
 
 class PlantPage extends StatefulWidget {
@@ -114,6 +115,7 @@ class _PlantPageState extends State<PlantPage> {
                                           onPressed: () {
                                             Navigator.pop(context);
                                           },
+                                            style:commonButtonStyle,
                                           child: const Text("Annuler")),
                                         TextButton(
                                           onPressed: () async {
@@ -126,6 +128,7 @@ class _PlantPageState extends State<PlantPage> {
                                               });
                                             }
                                           },
+                                            style:commonButtonStyle,
                                           child: const Text("Valider")
                                         )
                                       ],
@@ -133,6 +136,7 @@ class _PlantPageState extends State<PlantPage> {
                                   }
                                 );
                               },
+                                  style: commonButtonStyle,
                               child: const Text("Modifier les conseils.")
                             ),
                             const Divider(color: Colors.grey),
@@ -162,6 +166,7 @@ class _PlantPageState extends State<PlantPage> {
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
+                                              style:commonButtonStyle,
                                             child: const Text("Annuler")
                                           ),
                                           TextButton(
@@ -170,6 +175,7 @@ class _PlantPageState extends State<PlantPage> {
                                               Navigator.pop(context);
                                               Navigator.pop(context);
                                             },
+                                              style:commonButtonStyle,
                                             child: const Text("Valider")
                                           )
                                         ],
@@ -177,6 +183,7 @@ class _PlantPageState extends State<PlantPage> {
                                     }
                                   );
                                 },
+                                  style: commonButtonStyle,
                                 child: const Text("Retirer la plante.")
                             ),
                           ],
@@ -239,6 +246,7 @@ class _PlantPageState extends State<PlantPage> {
                                                   onPressed: (){
                                                     Navigator.pop(context);
                                                   },
+                                                  style: commonButtonStyle,
                                                   child: Text("Annuler")
                                               ),
                                               TextButton(
@@ -262,6 +270,7 @@ class _PlantPageState extends State<PlantPage> {
                                                       });
                                                     }
                                                   },
+                                                  style: commonButtonStyle,
                                                   child: Text("Valider")
                                               ),
                                             ],
@@ -272,6 +281,7 @@ class _PlantPageState extends State<PlantPage> {
                                 );
                                 refresh();
                               },
+                              style: commonButtonStyle,
                               child: const Text("Programmer un entretien")
                           ),
                         )

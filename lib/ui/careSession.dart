@@ -4,6 +4,7 @@ import 'package:arosaje/util/globals.dart';
 import 'package:flutter/material.dart';
 
 import '../models/plante_informations_entretien.dart';
+import '../util/button.dart';
 
 class CareSession extends StatefulWidget {
   PlanteInformationsEntretien planteInformationsEntretien;
@@ -57,6 +58,7 @@ class _CareSessionState extends State<CareSession> {
                 await planteService.sePositionner(widget.planteInformationsEntretien.idVisite, Globals.userId);
                 widget.refresh();
               },
+              style: commonButtonStyle,
               child: const Text("Se positionner")
           )
         ],

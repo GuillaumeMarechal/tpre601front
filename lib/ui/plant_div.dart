@@ -40,7 +40,7 @@ class _MyPlantsDivState extends State<MyPlantsDiv> {
           widget.refresh();
         },
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 10),
+          margin: EdgeInsets.all(10.0),
           decoration: BoxDecoration(
             color: isHovered ? Color(0xFFA2C48B).withOpacity(0.5) : Color(0xFFA2C48B).withOpacity(0.3),
             borderRadius: BorderRadius.circular(10),
