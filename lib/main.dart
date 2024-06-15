@@ -1,4 +1,5 @@
 import 'package:arosaje/ui/login.dart';
+import 'package:arosaje/ui/profile.dart';
 import 'package:arosaje/ui/services/PlanteService.dart';
 import 'package:arosaje/util/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -94,19 +95,34 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         actions: [
-          TextButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
-            },
-            icon: Icon(Icons.account_circle, color: Colors.black),
-            label: Text(
-              'Se connecter',
-              style: TextStyle(color: Colors.black),
+          if(!Globals.logged)
+            TextButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+              icon: Icon(Icons.account_circle, color: Colors.black),
+              label: Text(
+                'Se connecter',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
-          ),
+          if(Globals.logged)
+            TextButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfilePage()),
+                );
+              },
+              icon: const Icon(Icons.account_circle, color: Colors.black),
+              label: const Text(
+                'Profile',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
         ],
       ),
       body: PageStorage(

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "682801886067",
+    "project_id": "arosaje-424508",
+    "storage_bucket": "arosaje-424508.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682801886067:android:3f2c8337bfd06e4d340b06",
+        "android_client_info": {
+          "package_name": "com.epsi.arosaje"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAx5qNk60xuS2YnV65XGRK1IeP3Z3l_yKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -37,7 +37,6 @@ class _MyPlantsPageState extends State<MyPlantsPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(Globals.token);
     if(!Globals.logged){
       return const Text("Vous devez etre connecté pour consulter vos plantes");
     }

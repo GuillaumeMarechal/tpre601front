@@ -5,6 +5,7 @@ class Globals{
   static bool logged = false;
   static String token = "";
   static String? uid() => FirebaseAuth.instance.currentUser?.uid;
+  static String? email() => FirebaseAuth.instance.currentUser?.email;
 
   static init(){
     FirebaseAuth.instance

@@ -119,7 +119,6 @@ class _PlantPageState extends State<PlantPage> {
                                           child: const Text("Annuler")),
                                         TextButton(
                                           onPressed: () async {
-                                            print(planteInformations.idPlantePerso);
                                             bool result = await planteService.patchPlantePersonnelleConseils(PatchPlantePersonnelleConseils(planteInformations.idPlantePerso, controller.text));
                                             if(result){
                                               Navigator.pop(context);
