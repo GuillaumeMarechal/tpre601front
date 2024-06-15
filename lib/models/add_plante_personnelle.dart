@@ -10,11 +10,10 @@ class AddPlantePersonnelle {
   String latitude;
   String longitude;
   String conseils;
-  int userIdUser;
   int planteIdPlante;
   List<XFile> images;
 
-  AddPlantePersonnelle(this.nombre, this.adresseApproximative, this.latitude, this.longitude, this.conseils, this.dateCreation, this.userIdUser, this.planteIdPlante, this.images);
+  AddPlantePersonnelle(this.nombre, this.adresseApproximative, this.latitude, this.longitude, this.conseils, this.dateCreation, this.planteIdPlante, this.images);
 
   Future<Map<String, dynamic>> toJson() async {
     List<String> imagesByte = [];
@@ -29,7 +28,6 @@ class AddPlantePersonnelle {
       "latitude" : this.latitude,
       "longitude" : this.longitude,
       "conseils" : this.conseils,
-      "userIdUser" : this.userIdUser,
       "planteIdPlante" : this.planteIdPlante,
       "images" : imagesByte,
     };

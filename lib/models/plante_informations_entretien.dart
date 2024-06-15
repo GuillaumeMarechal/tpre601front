@@ -6,7 +6,7 @@ import 'package:arosaje/models/date_model.dart';
 class PlanteInformationsEntretien{
   int idVisite;
   String nomGardien;
-  int idGardien;
+  String idGardien;
   DateModel dateEntretien;
   bool problemeEntretien;
   bool problemeSante;
@@ -17,7 +17,7 @@ class PlanteInformationsEntretien{
   PlanteInformationsEntretien.fromJson(Map<String, dynamic> json):
       this.idVisite = json["idVisite"]??0,
       this.nomGardien = json["nomGardien"]??"",
-      this.idGardien = json["idGardien"]??0,
+      this.idGardien = json["idGardien"]??"",
       this.dateEntretien = DateModel.fromTimestamp(json["dateEntretien"]??""),
       this.problemeEntretien = json["problemeEntretien"]??false,
       this.problemeSante = json["problemeSante"]??false,

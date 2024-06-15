@@ -7,7 +7,7 @@ import 'package:arosaje/models/plante_informations_entretien.dart';
 class PlanteInformations{
   int idPlantePerso;
   String nomPlante;
-  int idUser;
+  String idUser;
   String username;
   List<Image> images;
   String adresseApproximative;

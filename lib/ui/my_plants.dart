@@ -24,17 +24,23 @@ class _MyPlantsPageState extends State<MyPlantsPage> {
   @override
   void initState(){
     super.initState();
-    plantesResume = planteService.fetchPlantesResume(Globals.userId);
-    if(Globals.botanist){
-      plantesVisitesResume = planteService.fetchPlantesVisitesResume(Globals.userId);
-    }
-    else{
-      plantesVisitesResume = null;
+    if(Globals.logged){
+      plantesResume = planteService.fetchPlantesResume();
+      if(Globals.botanist){
+        plantesVisitesResume = planteService.fetchPlantesVisitesResume();
+      }
+      else{
+        plantesVisitesResume = null;
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    print(Globals.token);
+    if(!Globals.logged){
+      return const Text("Vous devez etre connecté pour consulter vos plantes");
+    }
     return Column(
       children: [
         Row(
@@ -58,8 +64,8 @@ class _MyPlantsPageState extends State<MyPlantsPage> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  plantesResume = planteService.fetchPlantesResumeWithSearch(Globals.userId, searchController.text);
-                  plantesVisitesResume = planteService.fetchPlantesVisitesResumeWithSearch(Globals.userId, searchController.text);
+                  plantesResume = planteService.fetchPlantesResumeWithSearch(searchController.text);
+                  plantesVisitesResume = planteService.fetchPlantesVisitesResumeWithSearch(searchController.text);
                 });
               },
               style: ElevatedButton.styleFrom(
@@ -143,7 +149,7 @@ class _MyPlantsPageState extends State<MyPlantsPage> {
                 MaterialPageRoute(builder: (context) => AddPlant()),
               );
               setState(() {
-                plantesResume = planteService.fetchPlantesResume(Globals.userId);
+                plantesResume = planteService.fetchPlantesResume();
               });
             },
             style: commonButtonStyle,
@@ -159,7 +165,7 @@ class _MyPlantsPageState extends State<MyPlantsPage> {
 
   refresh(){
     setState(() {
-      plantesResume = planteService.fetchPlantesResume(Globals.userId);
+      plantesResume = planteService.fetchPlantesResume();
     });
   }
 }

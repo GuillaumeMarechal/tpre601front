@@ -1,12 +1,36 @@
 import 'package:arosaje/ui/login.dart';
+import 'package:arosaje/ui/services/PlanteService.dart';
+import 'package:arosaje/util/globals.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'ui/home.dart';
 import 'ui/forum.dart';
 import 'ui/map.dart';
 import 'ui/message.dart';
 import 'ui/my_plants.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+  } catch (e) {
+    print(e);
+  }
+  Globals.init();
+  FirebaseAuth.instance
+      .idTokenChanges()
+      .listen((User? user) async {
+    if (user != null) {
+      Globals.token = (await user.getIdToken())!;
+      Globals.botanist = await PlanteService().isBotanist();
+    }
+    else{
+      Globals.token = "";
+    }
+  });
   runApp(const MyApp());
 }
 

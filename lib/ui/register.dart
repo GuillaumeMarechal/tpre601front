@@ -1,7 +1,23 @@
+import 'package:arosaje/ui/services/user_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:arosaje/ui/login.dart'; // Importez votre LoginPage
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController usernamePasswordController = TextEditingController();
+  String signupResult = "";
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +52,12 @@ class RegisterPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if(signupResult != "")
+                Text(signupResult),
+              if(signupResult != "")
+                SizedBox(height: 16.0),
               TextFormField(
+                controller: usernamePasswordController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -48,6 +69,7 @@ class RegisterPage extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               TextFormField(
+                controller: emailController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -59,6 +81,7 @@ class RegisterPage extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               TextFormField(
+                controller: passwordController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -71,6 +94,7 @@ class RegisterPage extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               TextFormField(
+                controller: confirmPasswordController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -84,7 +108,7 @@ class RegisterPage extends StatelessWidget {
               SizedBox(height: 16.0),
               Row(
                 children: [
-                  Text("Vous avez déjà un compte ? "),
+                  const Text("Vous avez déjà un compte ? "),
                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
@@ -115,8 +139,31 @@ class RegisterPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(1.0),
                       ),
                     ),
-                    onPressed: () {
-                      // Logique d'inscription
+                    onPressed: () async {
+                      if (confirmPasswordController.text == passwordController.text) {
+                        try {
+                          final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
+                          await UserService().register(usernamePasswordController.text);
+                          Navigator.pop(context);
+                        } on FirebaseAuthException catch (e) {
+                          setState(() {
+                            if (e.code == 'weak-password') {
+                              signupResult = 'Le mot de passe est trop faible.';
+                            } else if (e.code == 'email-already-in-use') {
+                              signupResult = 'Ce compte existe déjà pour cet e-mail.';
+                            } else {
+                              signupResult = e.message ?? "Erreur inconnue";
+                            }
+                          });
+                        }
+                      } else {
+                        setState(() {
+                          signupResult = "Les mots de passe ne correspondent pas";
+                        });
+                      }
                     },
                     child: Text(
                       'S\'inscrire',

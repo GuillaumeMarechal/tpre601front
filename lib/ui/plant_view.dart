@@ -92,7 +92,7 @@ class _PlantPageState extends State<PlantPage> {
                             _buildRow(Icons.history, 'Dernier entretien : ${planteInformations.getDateDernierEntretien().toString()}'),
                             const Divider(color: Colors.grey),
                             _buildRow(Icons.note, 'Conseils : \n${planteInformations.conseils}'),
-                            if(planteInformations.idUser == Globals.userId)
+                            if(planteInformations.idUser == Globals.uid())
                               ElevatedButton(
                               onPressed: () {
                                 TextEditingController controller = TextEditingController();
@@ -152,7 +152,7 @@ class _PlantPageState extends State<PlantPage> {
                               ],
                             ),
                             const Divider(color: Colors.grey),
-                            if(planteInformations.idUser == Globals.userId)
+                            if(planteInformations.idUser == Globals.uid())
                               ElevatedButton(
                                 onPressed: () {
                                   showDialog(
@@ -189,9 +189,9 @@ class _PlantPageState extends State<PlantPage> {
                           ],
                         ),
                       ),
-                      if(planteInformations.idUser == Globals.userId)
+                      if(planteInformations.idUser == Globals.uid())
                         const SizedBox(height: 10), // Séparation de 10 pixels
-                      if(planteInformations.idUser == Globals.userId)
+                      if(planteInformations.idUser == Globals.uid())
                         Container(
                         margin: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0),
                         padding: const EdgeInsets.all(10.0),

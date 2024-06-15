@@ -55,7 +55,7 @@ class _CareSessionState extends State<CareSession> {
         children: [
           ElevatedButton(
               onPressed: () async {
-                await planteService.sePositionner(widget.planteInformationsEntretien.idVisite, Globals.userId);
+                await planteService.sePositionner(widget.planteInformationsEntretien.idVisite);
                 widget.refresh();
               },
               style: commonButtonStyle,
@@ -68,7 +68,7 @@ class _CareSessionState extends State<CareSession> {
   }
 
   getVisiteNonEffectue(){
-    if(Globals.botanist && widget.planteInformationsEntretien.idGardien == Globals.userId){
+    if(Globals.logged && Globals.botanist && widget.planteInformationsEntretien.idGardien == Globals.uid()){
       return Row(
         children: [
           ElevatedButton(

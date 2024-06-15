@@ -22,11 +22,11 @@ import '../../models/map_informations.dart';
 class PlanteService{
   static final String uri = 'http://10.0.2.2:8081/';
 
-  Future<List<PlanteResume>> fetchPlantesResume(int userId) async {
+  Future<List<PlanteResume>> fetchPlantesResume() async {
     List<PlanteResume> list = [];
 
     try{
-      final response = await http.get(Uri.parse('${uri}plantes/resume?userId=${userId}'));
+      final response = await http.get(Uri.parse('${uri}plantes/resume/user'), headers: Globals.getHeader());
       if(response.statusCode == 200){
         BodyDTO bodyDTO = BodyDTO.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
         if(bodyDTO.body is List<dynamic>){
@@ -48,10 +48,10 @@ class PlanteService{
     return list;
   }
 
-  Future<List<PlanteResume>> fetchPlantesResumeWithSearch(int userId, String search) async {
+  Future<List<PlanteResume>> fetchPlantesResumeWithSearch(String search) async {
     List<PlanteResume> list = [];
     try{
-      final response = await http.get(Uri.parse('${uri}plantes/resume?userId=${userId}&search=${search}'));
+      final response = await http.get(Uri.parse('${uri}plantes/resume/user?search=${search}'), headers: Globals.getHeader());
       if(response.statusCode == 200){
         BodyDTO bodyDTO = BodyDTO.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
         if(bodyDTO.body is List<dynamic>){
@@ -73,11 +73,11 @@ class PlanteService{
     return list;
   }
 
-  Future<List<PlanteResume>> fetchPlantesVisitesResume(int gardienId) async {
+  Future<List<PlanteResume>> fetchPlantesVisitesResume() async {
     List<PlanteResume> list = [];
 
     try{
-      final response = await http.get(Uri.parse('${uri}plantes/resume?gardienId=${gardienId}'));
+      final response = await http.get(Uri.parse('${uri}plantes/resume/gardien'), headers: Globals.getHeader());
       if(response.statusCode == 200){
         BodyDTO bodyDTO = BodyDTO.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
         if(bodyDTO.body is List<dynamic>){
@@ -99,10 +99,10 @@ class PlanteService{
     return list;
   }
 
-  Future<List<PlanteResume>> fetchPlantesVisitesResumeWithSearch(int gardienId, String search) async {
+  Future<List<PlanteResume>> fetchPlantesVisitesResumeWithSearch(String search) async {
     List<PlanteResume> list = [];
     try{
-      final response = await http.get(Uri.parse('${uri}plantes/resume?gardienId=${gardienId}&search=${search}'));
+      final response = await http.get(Uri.parse('${uri}plantes/resume/gardien?search=${search}'), headers: Globals.getHeader());
       if(response.statusCode == 200){
         BodyDTO bodyDTO = BodyDTO.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
         if(bodyDTO.body is List<dynamic>){
@@ -124,8 +124,9 @@ class PlanteService{
     return list;
   }
 
+  // PUBLIC
   Future<PlanteInformations> fetchPlanteInformatios(int id) async {
-    final response = await http.get(Uri.parse('${uri}plantes/$id'));
+    final response = await http.get(Uri.parse('${uri}plantes/public/$id'));
     if(response.statusCode == 200){
       BodyDTO bodyDTO = BodyDTO.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
       if(bodyDTO.body is Map<String, dynamic>){
@@ -140,10 +141,11 @@ class PlanteService{
     }
   }
 
+  // PUBLIC
   Future<MapInformations> fetchMapInformation() async {
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     final response = await http.post(
-        Uri.parse("${uri}plantes/position"),
+        Uri.parse("${uri}plantes/public/position"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -160,7 +162,7 @@ class PlanteService{
         if(e['visiteLibre']){
           color = Colors.red;
         }
-        if(e['idUser'] == Globals.userId){
+        if(e['idUser'] == Globals.uid()){
           color = Colors.blue;
         }
         return Marker(
@@ -181,6 +183,7 @@ class PlanteService{
     }
   }
 
+  // PUBLIC
   Future<CorrectPosition> isCorrectPosition(String position) async {
     final response = await http.get(
         Uri.parse("https://geocode.maps.co/search"
@@ -199,11 +202,28 @@ class PlanteService{
     }
   }
 
+  Future<bool> addPlantePersonnelle(AddPlantePersonnelle addPlantePersonnelle) async {
+    final response = await http.post(Uri.parse('${uri}plantes'), headers: Globals.getHeaderContentType(), body: json.encode( await addPlantePersonnelle.toJson()));
+    if(response.statusCode == 200){
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> patchPlantePersonnelleConseils(PatchPlantePersonnelleConseils dto) async{
+    final response = await http.patch(Uri.parse('${uri}plantes/conseils'), headers: Globals.getHeaderContentType(), body: json.encode( await dto.toJson()));
+    if(response.statusCode == 200){
+      return true;
+    }
+    return false;
+  }
+
+  // PUBLIC
   Future<List<PlanteNomCommun>> fetchPlantesNomCommun() async{
     List<PlanteNomCommun> list = [];
 
     try{
-      final response = await http.get(Uri.parse('${uri}plantes/nom_communs'));
+      final response = await http.get(Uri.parse('${uri}plantes/public/nom_communs'));
       if(response.statusCode == 200){
         BodyDTO bodyDTO = BodyDTO.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
         if(bodyDTO.body is List<dynamic>){
@@ -225,48 +245,31 @@ class PlanteService{
     return list;
   }
 
-  Future<bool> addPlantePersonnelle(AddPlantePersonnelle addPlantePersonnelle) async {
-    final response = await http.post(Uri.parse('${uri}plantes'), headers: {"content-type" : "application/json"}, body: json.encode( await addPlantePersonnelle.toJson()));
-    if(response.statusCode == 200){
-      return true;
-    }
-    return false;
-  }
-
-  Future<bool> patchPlantePersonnelleConseils(PatchPlantePersonnelleConseils dto) async{
-    final response = await http.patch(Uri.parse('${uri}plantes/conseils'), headers: {"content-type" : "application/json"}, body: json.encode( await dto.toJson()));
-    if(response.statusCode == 200){
-      return true;
-    }
-    return false;
-  }
-
   Future<bool> deletePlantePersonnelle(int id) async{
-    final response = await http.delete(Uri.parse('${uri}plantes/$id'));
+    final response = await http.delete(Uri.parse('${uri}plantes/$id'), headers: Globals.getHeader());
     if(response.statusCode == 200){
       return true;
     }
     return false;
   }
 
-  Future<void> sePositionner(int id, int gardienId) async{
+  Future<void> sePositionner(int id) async{
     await http.post(Uri.parse('${uri}visites/positionner'),
-        headers: {"content-type" : "application/json"},
+        headers: Globals.getHeaderContentType(),
         body: json.encode({
-          "idVisite": id,
-          "gardienIdUser": gardienId
+          "idVisite": id
         }));
   }
 
   Future<void> validerEntretien(ValiderEntretien dto) async{
     await http.post(Uri.parse('${uri}visites/valider'),
-        headers: {"content-type" : "application/json"},
+        headers: Globals.getHeaderContentType(),
         body: json.encode(dto.toJson()));
   }
 
   Future<bool> ajouterEntretien(String date, int idPlante) async{
     final response = await http.post(Uri.parse('${uri}visites/ajouter'),
-        headers: {"content-type" : "application/json"},
+        headers: Globals.getHeaderContentType(),
         body: json.encode({
           "dateVisite" : date,
           "plantePersonnelleIdPlantePerso" : idPlante
@@ -279,5 +282,14 @@ class PlanteService{
 
   Future<void> seRetirer(int id) async{
     await http.delete(Uri.parse('${uri}visites/positionner/${id}'));
+  }
+
+  Future<bool> isBotanist() async{
+    final response = await http.get(Uri.parse('${uri}user/botanist'));
+    if(response.statusCode == 200){
+      BodyDTO bodyDTO = BodyDTO.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+      return bodyDTO.body;
+    }
+    throw Exception();
   }
 }
