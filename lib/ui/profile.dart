@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../models/user_data.dart';
+import '../util/button.dart';
 import '../util/globals.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -205,6 +206,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       modify = true;
                                     });
                                   },
+                                  style: commonButtonStyle,
                                   child: Text("Modifier")
                               ),
                             if(modify)
@@ -296,6 +298,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Globals.logged = false;
                 Navigator.pop(context);
               },
+                style:commonButtonStyle,
               child: Text("Se deconnecter")
             )
           ],
