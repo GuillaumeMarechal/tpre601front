@@ -97,11 +97,13 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           if(!Globals.logged)
             TextButton.icon(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => LoginPage()),
                 );
+                setState(() {
+                });
               },
               icon: Icon(Icons.account_circle, color: Colors.black),
               label: Text(
@@ -111,11 +113,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           if(Globals.logged)
             TextButton.icon(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
+                setState(() {
+                });
               },
               icon: const Icon(Icons.account_circle, color: Colors.black),
               label: const Text(
