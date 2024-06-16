@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:arosaje/models/user_data.dart';
 import 'package:arosaje/util/globals.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 import '../../models/body_dto.dart';
@@ -9,12 +10,16 @@ import '../../models/body_dto.dart';
 class UserService{
   static final String uri = 'http://10.0.2.2:8081/';
 
-  Future<void> register(String pseudo) async {
-    final response = await http.post(Uri.parse('${uri}users'),
+  Future<void> register(String id, String pseudo) async {
+    final response = await http.post(Uri.parse('${uri}users/public/register'),
         headers: {"content-type" : "application/json"},
         body: json.encode( {
           "pseudo" : pseudo,
+          "id" : id,
         }));
+    if(response.statusCode != 200){
+      print("aaaa ${response.body}");
+    }
   }
 
   Future<UserData> getUserData() async {
@@ -29,8 +34,18 @@ class UserService{
   }
 
   Future<void> patchUserData(UserData userData) async {
-    final response = await http.post(Uri.parse('${uri}users'),
+    final response = await http.patch(Uri.parse('${uri}users'),
         headers: Globals.getHeaderContentType(),
         body: json.encode(userData.toJson()));
+    print(response.statusCode);
+  }
+
+  Future<bool> pseudoUsed(String pseudo) async{
+    final response = await http.get(Uri.parse('${uri}users/public/pseudo/$pseudo'));
+    if(response.statusCode == 200){
+      BodyDTO bodyDTO = BodyDTO.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+      return bodyDTO.body;
+    }
+    throw Exception();
   }
 }

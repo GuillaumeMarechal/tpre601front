@@ -14,7 +14,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late Future<UserData> user;
+  late Future<UserData?> user;
   UserService userService = UserService();
   bool modify = false;
   TextEditingController pseudoController = TextEditingController();
@@ -27,6 +27,9 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     if(Globals.logged){
       user = userService.getUserData();
+    }
+    else{
+      user = Future.value(null);
     }
   }
 
@@ -217,19 +220,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   ElevatedButton(
                                       onPressed: () async {
-                                        UserData userData = UserData(
-                                            pseudoController.text == "" ? data.pseudo : pseudoController.text,
-                                            nomController.text == "" ? data.nom : nomController.text,
-                                            prenomController.text == "" ? data.prenom : prenomController.text
-                                        );
-                                        await userService.patchUserData(userData);
-                                        if(emailController.text != ""){
-                                          FirebaseAuth.instance.currentUser?.verifyBeforeUpdateEmail(emailController.text);
+                                        if(pseudoController.text != "" && await userService.pseudoUsed(pseudoController.text)){
                                           await showDialog(
                                               context: context,
                                               builder: (context) {
                                                 return AlertDialog(
-                                                  content: Text("Un email de verification a été envoyé à la nouvelle adresse email."),
+                                                  content: Text("Le pseudo est deja utilisé."),
                                                   actions: [
                                                     TextButton(
                                                         onPressed: (){
@@ -242,9 +238,37 @@ class _ProfilePageState extends State<ProfilePage> {
                                               }
                                           );
                                         }
-                                        setState(() {
-                                          modify = false;
-                                        });
+                                        else{
+                                          UserData userData = UserData(
+                                              pseudoController.text,
+                                              nomController.text,
+                                              prenomController.text
+                                          );
+                                          await userService.patchUserData(userData);
+                                          if(emailController.text != ""){
+                                            FirebaseAuth.instance.currentUser?.verifyBeforeUpdateEmail(emailController.text);
+                                            await showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    content: Text("Un email de verification a été envoyé à la nouvelle adresse email."),
+                                                    actions: [
+                                                      TextButton(
+                                                          onPressed: (){
+                                                            Navigator.pop(context);
+                                                          },
+                                                          child: Text("ok")
+                                                      )
+                                                    ],
+                                                  );
+                                                }
+                                            );
+                                          }
+                                          setState(() {
+                                            user = userService.getUserData();
+                                            modify = false;
+                                          });
+                                        }
                                       },
                                       child: Text("Valider")
                                   )

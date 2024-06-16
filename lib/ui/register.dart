@@ -14,7 +14,7 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController usernamePasswordController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
   String signupResult = "";
 
 
@@ -57,7 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
               if(signupResult != "")
                 SizedBox(height: 16.0),
               TextFormField(
-                controller: usernamePasswordController,
+                controller: usernameController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -140,28 +140,88 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     onPressed: () async {
-                      if (confirmPasswordController.text == passwordController.text) {
-                        try {
-                          final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                            email: emailController.text,
-                            password: passwordController.text,
+                      try{
+                        if(await UserService().pseudoUsed(usernameController.text)){
+                          print("b");
+                          await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  content: Text("Le pseudo est deja utilisé."),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: (){
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("ok")
+                                    )
+                                  ],
+                                );
+                              }
                           );
-                          await UserService().register(usernamePasswordController.text);
-                          Navigator.pop(context);
-                        } on FirebaseAuthException catch (e) {
-                          setState(() {
-                            if (e.code == 'weak-password') {
-                              signupResult = 'Le mot de passe est trop faible.';
-                            } else if (e.code == 'email-already-in-use') {
-                              signupResult = 'Ce compte existe déjà pour cet e-mail.';
-                            } else {
-                              signupResult = e.message ?? "Erreur inconnue";
-                            }
-                          });
                         }
-                      } else {
+                        else{
+                          print("c");
+                          bool? utilisationDonnees = await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  // Ce message d'information à ete generé par Bing Copilot
+                                  content: Text("Chers utilisateurs,\n\nNous tenons à vous informer que nous collectons certaines informations pour améliorer votre expérience sur notre plateforme. Voici comment nous utilisons ces données :\n\nPseudonyme : Votre pseudonyme est unique et peut être modifié à tout moment. Il sert à vous reconnaitre sur notre site.\nMot de passe : Votre mot de passe est stocké de manière sécurisée sur les serveurs de google réservés à notre application. Il n’est connu que de vous et est utilisé uniquement lors de la vérification de vos informations d’identification.\nAdresse e-mail : Votre adresse e-mail est également stockée de manière sécurisée. Elle est utilisée uniquement pour la connexion et la vérification d’e-mail.\nNom et prénom : Ces informations ne sont pas obligatoires, mais elles peuvent être utiles pour récupérer votre compte en cas de perte de mot de passe. Vous pouvez choisir de les retirer à tout moment.\nAdresse approximative : Lorsque vous signalez une plante, nous vous demandons de fournir une zone approximative où la plante se trouve. Cette information est importante pour les botanistes, car elle leur permet de connaître les plantes à proximité.\nVous pouvez supprimer votre compte a tout moment."),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: (){
+                                          Navigator.pop(context, false);
+                                        },
+                                        child: Text("refuser")
+                                    ),
+                                    TextButton(
+                                        onPressed: (){
+                                          Navigator.pop(context, true);
+                                        },
+                                        child: Text("accepter")
+                                    )
+                                  ],
+                                );
+                              }
+                          );
+                          if(utilisationDonnees == null || !utilisationDonnees){
+                            setState(() {
+                              signupResult = "Vous devez accepter l'utilisation des informations pour vous inscrire.";
+                            });
+                          }
+                          else{
+                            if (confirmPasswordController.text == passwordController.text) {
+                              try {
+                                final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                );
+                                await UserService().register(userCredential.user!.uid, usernameController.text);
+                                Navigator.pop(context);
+                              } on FirebaseAuthException catch (e) {
+                                setState(() {
+                                  if (e.code == 'weak-password') {
+                                    signupResult = 'Le mot de passe est trop faible.';
+                                  } else if (e.code == 'email-already-in-use') {
+                                    signupResult = 'Ce compte existe déjà pour cet e-mail.';
+                                  } else {
+                                    signupResult = e.message ?? "Erreur inconnue";
+                                  }
+                                });
+                              }
+                            } else {
+                              setState(() {
+                                signupResult = "Les mots de passe ne correspondent pas";
+                              });
+                            }
+                          }
+                        }
+                      }
+                      catch(e){
+                        print(e);
                         setState(() {
-                          signupResult = "Les mots de passe ne correspondent pas";
+                          signupResult = "Une erreur s'est produite : $e";
                         });
                       }
                     },
