@@ -26,7 +26,6 @@ Future<void> main() async {
       .listen((User? user) async {
     if (user != null) {
       Globals.token = (await user.getIdToken())!;
-      Globals.botanist = await PlanteService().isBotanist();
     }
     else{
       Globals.token = "";
@@ -81,8 +80,15 @@ class _MyHomePageState extends State<MyHomePage> {
     MapPage(),
   ];
 
+  void isBotanist() async{
+    if(Globals.logged){
+      Globals.botanist = await PlanteService().isBotanist();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    isBotanist();
     return Scaffold(
       appBar: AppBar(
         title: Row(

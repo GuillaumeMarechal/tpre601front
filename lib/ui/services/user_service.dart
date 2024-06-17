@@ -34,6 +34,7 @@ class UserService{
   }
 
   Future<void> patchUserData(UserData userData) async {
+    print(Globals.token);
     final response = await http.patch(Uri.parse('${uri}users'),
         headers: Globals.getHeaderContentType(),
         body: json.encode(userData.toJson()));

@@ -285,11 +285,13 @@ class PlanteService{
   }
 
   Future<bool> isBotanist() async{
-    final response = await http.get(Uri.parse('${uri}user/botanist'));
+    print(Globals.token);
+    final response = await http.get(Uri.parse('${uri}users/botanist'), headers: Globals.getHeader());
     if(response.statusCode == 200){
       BodyDTO bodyDTO = BodyDTO.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
       return bodyDTO.body;
     }
+    print(response.statusCode);
     throw Exception();
   }
 }
