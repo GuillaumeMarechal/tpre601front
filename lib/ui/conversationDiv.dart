@@ -1,7 +1,7 @@
 import 'package:arosaje/ui/messageUserView.dart';
 import 'package:flutter/material.dart';
 
-class MessageUser extends StatelessWidget {
+class ConversationDiv extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

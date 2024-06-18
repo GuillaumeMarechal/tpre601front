@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'ui/home.dart';
 import 'ui/forum.dart';
 import 'ui/map.dart';
-import 'ui/message.dart';
+import 'ui/messagePage.dart';
 import 'ui/my_plants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';

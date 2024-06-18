@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:arosaje/models/user_data.dart';
 import 'package:arosaje/util/globals.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 import '../../models/body_dto.dart';
@@ -23,7 +22,7 @@ class UserService{
   }
 
   Future<UserData> getUserData() async {
-    final response = await http.get(Uri.parse('${uri}users'),
+    final response = await http.get(Uri.parse('${uri}users/informations'),
         headers: Globals.getHeader());
     if(response.statusCode == 200){
       return UserData.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
@@ -35,7 +34,7 @@ class UserService{
 
   Future<void> patchUserData(UserData userData) async {
     print(Globals.token);
-    final response = await http.patch(Uri.parse('${uri}users'),
+    final response = await http.patch(Uri.parse('${uri}users/informations'),
         headers: Globals.getHeaderContentType(),
         body: json.encode(userData.toJson()));
     print(response.statusCode);

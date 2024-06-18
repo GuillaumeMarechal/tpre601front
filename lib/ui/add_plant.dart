@@ -51,21 +51,6 @@ class _AddPlantState extends State<AddPlant> {
             ),
           ],
         ),
-        actions: [
-          TextButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
-            },
-            icon: Icon(Icons.account_circle, color: Colors.black),
-            label: Text(
-              'Se connecter',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ],
       ),
       body: LayoutBuilder(
         builder: (context, viewportConstraints){
