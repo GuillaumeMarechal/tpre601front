@@ -2,15 +2,20 @@ import 'package:arosaje/ui/messageUserView.dart';
 import 'package:flutter/material.dart';
 
 class ConversationDiv extends StatelessWidget {
+  final String id;
+  final String pseudo;
+
+  ConversationDiv({required this.id, required this.pseudo});
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        print('User ID: $id');
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MessageUserView()),
         );
-        print('MessageUser tapped!');
       },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
@@ -50,7 +55,7 @@ class ConversationDiv extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Prénom Nom',
+                    pseudo,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 5.0),

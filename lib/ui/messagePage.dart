@@ -11,6 +11,7 @@ class MessagePage extends StatefulWidget {
 class _MessagePageState extends State<MessagePage> {
   TextEditingController _searchController = TextEditingController();
   MessageService messageService = MessageService();
+  List<UserIdPseudo> _listUser = [];
 
   @override
   void initState() {
@@ -27,8 +28,11 @@ class _MessagePageState extends State<MessagePage> {
 
   Future<void> _onSearchChanged() async {
     String searchText = _searchController.text;
-    List<UserIdPseudo> ListUser = await messageService.getConversation(searchText);
-    print(ListUser);
+    List<UserIdPseudo> listUser = await messageService.getConversation(searchText);
+    listUser.sort((a,b)=>a.pseudo.compareTo(b.pseudo));
+    setState(() {
+      _listUser = listUser;
+    });
   }
 
   @override
@@ -52,15 +56,14 @@ class _MessagePageState extends State<MessagePage> {
           ),
         ),
         Expanded(
-          child: ListView(
-            children: [
-              ConversationDiv(),
-              SizedBox(height: 4),
-              ConversationDiv(),
-              SizedBox(height: 4),
-              ConversationDiv(),
-              SizedBox(height: 4),
-            ],
+          child: ListView.builder(
+            itemCount: _listUser.length,
+            itemBuilder: (context, index) {
+              return ConversationDiv(
+                id: _listUser[index].id,
+                pseudo: _listUser[index].pseudo,
+              );
+            },
           ),
         ),
       ],
