@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text('Profil'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Visibility(
         visible: Globals.logged,
-        replacement: const Text("Vous devez etre connecté pour acceder a votre profile"),
+        replacement: const Text("Vous devez être connecté pour accéder à votre profil."),
         child: Column(
           children: [
             FutureBuilder(
@@ -90,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         decoration: InputDecoration(
                                           filled: true,
                                           fillColor: Colors.white,
-                                          labelText: 'nouveau pseudo',
+                                          labelText: 'Nouveau pseudo',
                                           border: OutlineInputBorder(
                                             borderRadius: BorderRadius.circular(5.0),
                                           ),
@@ -112,7 +112,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         decoration: InputDecoration(
                                           filled: true,
                                           fillColor: Colors.white,
-                                          labelText: 'nouveau nom',
+                                          labelText: 'Nouveau nom',
                                           border: OutlineInputBorder(
                                             borderRadius: BorderRadius.circular(5.0),
                                           ),
@@ -125,7 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Row(
                               children: [
                                 Expanded(
-                                  child: Text("Prenom : ${data.prenom}"),
+                                  child: Text("Prénom : ${data.prenom}"),
                                 ),
                                 if(modify)
                                   Expanded(
@@ -134,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         decoration: InputDecoration(
                                           filled: true,
                                           fillColor: Colors.white,
-                                          labelText: 'nouveau prenom',
+                                          labelText: 'Nouveau prénom',
                                           border: OutlineInputBorder(
                                             borderRadius: BorderRadius.circular(5.0),
                                           ),
@@ -156,7 +156,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         decoration: InputDecoration(
                                           filled: true,
                                           fillColor: Colors.white,
-                                          labelText: 'nouveau email',
+                                          labelText: 'Nouvel email',
                                           border: OutlineInputBorder(
                                             borderRadius: BorderRadius.circular(5.0),
                                           ),
@@ -186,7 +186,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   onPressed: (){
                                                     Navigator.pop(context);
                                                   },
-                                                  child: const Text("valider")
+                                                  child: const Text("Valider")
                                               )
                                             ],
                                           );
@@ -227,13 +227,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                               context: context,
                                               builder: (context) {
                                                 return AlertDialog(
-                                                  content: Text("Le pseudo est deja utilisé."),
+                                                  content: Text("Le pseudo est déjà utilisé."),
                                                   actions: [
                                                     TextButton(
                                                         onPressed: (){
                                                           Navigator.pop(context);
                                                         },
-                                                        child: Text("ok")
+                                                        child: Text("OK")
                                                     )
                                                   ],
                                                 );
@@ -253,13 +253,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 context: context,
                                                 builder: (context) {
                                                   return AlertDialog(
-                                                    content: Text("Un email de verification a été envoyé à la nouvelle adresse email."),
+                                                    content: Text("Un email de vérification a été envoyé à la nouvelle adresse email."),
                                                     actions: [
                                                       TextButton(
                                                           onPressed: (){
                                                             Navigator.pop(context);
                                                           },
-                                                          child: Text("ok")
+                                                          child: Text("OK")
                                                       )
                                                     ],
                                                   );
@@ -299,7 +299,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.pop(context);
               },
                 style:commonButtonStyle,
-              child: Text("Se deconnecter")
+              child: Text("Se déconnecter")
             )
           ],
         )

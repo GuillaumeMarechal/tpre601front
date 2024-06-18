@@ -42,12 +42,25 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.white, // Couleur de fond de l'appbar
-          elevation: 0, // Pour enlever l'ombre de l'appbar
-          iconTheme: IconThemeData(color: Colors.black), // Couleur des icônes dans l'appbar
-          titleTextStyle: TextStyle(color: Colors.black), // Couleur du texte dans l'appbar
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.black),
+          titleTextStyle: TextStyle(color: Colors.black),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.transparent),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
         ),
       ),
       home: const MyHomePage(),
@@ -80,8 +93,8 @@ class _MyHomePageState extends State<MyHomePage> {
     MapPage(),
   ];
 
-  void isBotanist() async{
-    if(Globals.logged){
+  void isBotanist() async {
+    if (Globals.logged) {
       Globals.botanist = await PlanteService().isBotanist();
     }
   }
@@ -101,35 +114,33 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         actions: [
-          if(!Globals.logged)
+          if (!Globals.logged)
             TextButton.icon(
               onPressed: () async {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => LoginPage()),
                 );
-                setState(() {
-                });
+                setState(() {});
               },
               icon: Icon(Icons.account_circle, color: Colors.black),
-              label: Text(
+              label: const Text(
                 'Se connecter',
                 style: TextStyle(color: Colors.black),
               ),
             ),
-          if(Globals.logged)
+          if (Globals.logged)
             TextButton.icon(
               onPressed: () async {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
-                setState(() {
-                });
+                setState(() {});
               },
               icon: const Icon(Icons.account_circle, color: Colors.black),
               label: const Text(
-                'Profile',
+                'Profil',
                 style: TextStyle(color: Colors.black),
               ),
             ),
